@@ -94,6 +94,7 @@ class PolicyNode(Node):
 
 def main() -> None:
     rclpy.init()
+    
     node = PolicyNode()
     try:
         rclpy.spin(node)

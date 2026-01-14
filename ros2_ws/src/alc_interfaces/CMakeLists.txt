@@ -8,6 +8,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Placeholder.msg"
   "msg/LearnerState.msg"
   "msg/TutorAction.msg"
+  "msg/TrialOutcome.msg"
   "srv/Placeholder.srv"
 )
 

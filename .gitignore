@@ -76,3 +76,16 @@ compile_commands.json
 **/*.bag.active
 **/*.bag.metadata
 **/rosbag2_*/
+
+# Code documentation (may contain implementation details)
+CODE_DOCUMENTATION.md
+
+# experiment logs
+alc_logs/
+*.csv
+~/alc_logs/
+
+# analysis outputs
+results/*.png
+results/*.csv
+!results/.gitkeep

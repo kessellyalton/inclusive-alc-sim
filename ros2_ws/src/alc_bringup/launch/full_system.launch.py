@@ -13,6 +13,8 @@ def generate_launch_description():
 
     # Launch configuration
     disability_profile = LaunchConfiguration("disability_profile")
+    policy_mode = LaunchConfiguration("policy_mode")
+    seed = LaunchConfiguration("seed")
 
     # Launch arguments
     disability_profile_arg = DeclareLaunchArgument(
@@ -21,11 +23,24 @@ def generate_launch_description():
         description="Disability profile to simulate (e.g., dyslexia, adhd, autism, hearing, motor, none)"
     )
 
-    # Include Gazebo + bridge (pass disability_profile to sim launch)
+    policy_mode_arg = DeclareLaunchArgument(
+        "policy_mode",
+        default_value="inclusive_adaptive",
+        description="Policy mode: fixed, adaptive, or inclusive_adaptive"
+    )
+
+    seed_arg = DeclareLaunchArgument(
+        "seed",
+        default_value="42",
+        description="Random seed for reproducibility"
+    )
+
+    # Include Gazebo + bridge (pass disability_profile and seed to sim launch)
     sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(sim_launch),
         launch_arguments={
-            "disability_profile": disability_profile
+            "disability_profile": disability_profile,
+            "seed": seed
         }.items()
     )
 
@@ -42,15 +57,13 @@ def generate_launch_description():
         output="screen"
     )
 
-    # Policy decision-making
+    # Policy decision-making (use tutor_policy_node)
     policy = Node(
         package="alc_core",
-        executable="policy_node",
-        name="policy_node",
+        executable="tutor_policy_node",
+        name="tutor_policy_node",
         parameters=[{
-            "publish_hz": 2.0,
-            "base_pacing": 1.0,
-            "max_difficulty": 5,
+            "mode": policy_mode,
             "use_sim_time": True
         }],
         output="screen"
@@ -71,8 +84,11 @@ def generate_launch_description():
         executable="logger_node",
         name="logger_node",
         parameters=[{
-            "log_dir": "logs",
-            "run_name": "baseline_rule_policy",
+            "output_dir": os.path.join(os.path.expanduser("~"), "alc_logs"),
+            "run_name": "",
+            "condition": policy_mode,
+            "disability_profile": disability_profile,
+            "seed": seed,  # Matches learner_model_node seed for reproducibility
             "use_sim_time": True
         }],
         output="screen"
@@ -80,6 +96,8 @@ def generate_launch_description():
 
     return LaunchDescription([
         disability_profile_arg,
+        policy_mode_arg,
+        seed_arg,
         sim,
         disability,
         policy,

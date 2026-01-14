@@ -31,6 +31,7 @@ setup(
             'learner_model_node = alc_core.nodes.learner_model_node:main',
             'disability_sim_node = alc_core.nodes.disability_sim_node:main',
             'policy_node = alc_core.nodes.policy_node:main',
+            'tutor_policy_node = alc_core.nodes.tutor_policy_node:main',
             'tutor_interface_node = alc_core.nodes.tutor_interface_node:main',
             'logger_node = alc_core.nodes.logger_node:main',
         ],
