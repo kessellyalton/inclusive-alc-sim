@@ -12,17 +12,42 @@ import matplotlib.pyplot as plt
 
 def accessibility_match(modality: str, disability: str) -> int:
     """
-    Proxy rule set (keep consistent with reward.py).
+    Replicates the exact logic from alc_core.utils.reward.accessibility_match.
     
-    Returns 1 if modality is a good match for disability, 0 otherwise.
+    Uses the same DISABILITY_LIBRARY structure to ensure consistency with
+    the reward computation. Returns 1 for good match, 0 for bad match.
     """
-    if disability == "dyslexia":
-        return 1 if modality in ["audio", "multimodal"] else 0
-    if disability == "hearing_impairment":
-        return 1 if modality in ["visual", "multimodal"] else 0
-    if disability == "low_vision":
-        return 1 if modality in ["audio", "multimodal"] else 0
-    return 1
+    # DISABILITY_LIBRARY structure (must match models.py exactly)
+    DISABILITY_LIBRARY = {
+        "none": {
+            "modality_penalty": {"visual": 0.00, "audio": 0.00, "multimodal": -0.02}
+        },
+        "dyslexia": {
+            "modality_penalty": {"visual": 0.08, "audio": -0.02, "multimodal": 0.00}
+        },
+        "hearing_impairment": {
+            "modality_penalty": {"visual": 0.00, "audio": 0.10, "multimodal": 0.02}
+        },
+        "low_vision": {
+            "modality_penalty": {"visual": 0.10, "audio": -0.01, "multimodal": 0.02}
+        },
+    }
+    
+    # Get disability params (default to "none" if not found)
+    d = DISABILITY_LIBRARY.get(disability, DISABILITY_LIBRARY["none"])
+    penalty = d["modality_penalty"].get(modality, 0.0)
+    
+    # Replicate exact logic from reward.py
+    # multimodal often helps; allow bonus if not penalized
+    if modality == "multimodal" and penalty <= 0.02:
+        return 1
+    
+    # if penalty is negative or zero, that's a match
+    if penalty <= 0.0:
+        return 1
+    
+    # penalized modality (returns -0.5 in reward.py, but we return 0 for binary match)
+    return 0
 
 
 def main() -> None:
