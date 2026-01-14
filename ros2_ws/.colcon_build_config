@@ -1,0 +1,3 @@
+# Colcon build configuration to suppress harmless warnings
+# This suppresses the pytest-repeat unbuilt egg warning
+export PYTHONWARNINGS="ignore::UserWarning:setuptools.command.easy_install"

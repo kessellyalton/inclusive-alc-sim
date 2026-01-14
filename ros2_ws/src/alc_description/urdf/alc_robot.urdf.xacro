@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="alc_robot">
+
+  <link name="base_link">
+    <inertial>
+      <mass value="5.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.2" iyy="0.2" izz="0.2" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <geometry><box size="0.4 0.3 0.2"/></geometry>
+    </visual>
+    <collision>
+      <geometry><box size="0.4 0.3 0.2"/></geometry>
+    </collision>
+  </link>
+
+  <link name="screen_link">
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
+      <inertia ixx="0.001" iyy="0.001" izz="0.001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
+      <geometry><box size="0.3 0.02 0.2"/></geometry>
+      <material name="screen_material">
+        <color rgba="0.2 0.2 0.2 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
+      <geometry><box size="0.3 0.02 0.2"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="screen_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="screen_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+</robot>
