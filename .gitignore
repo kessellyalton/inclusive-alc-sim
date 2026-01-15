@@ -89,3 +89,4 @@ alc_logs/
 results/*.png
 results/*.csv
 !results/.gitkeep
+.Rhistory
