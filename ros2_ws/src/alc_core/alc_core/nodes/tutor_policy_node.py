@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Optional
 
 import rclpy
 from rclpy.node import Node
@@ -10,14 +11,33 @@ class TutorPolicyNode(Node):
         super().__init__("tutor_policy_node")
 
         self.declare_parameter("mode", "inclusive_adaptive")  # "fixed" | "adaptive" | "inclusive_adaptive"
+        self.declare_parameter("publish_hz", 2.0)  # Rate limit for pedagogical timescale
+
         self.mode = str(self.get_parameter("mode").value)
+        publish_hz = float(self.get_parameter("publish_hz").value)
+
+        # Store latest state (updated by subscription callback)
+        self.latest_state: Optional[LearnerState] = None
 
         self.pub = self.create_publisher(TutorAction, "/tutor/action", 10)
         self.sub = self.create_subscription(LearnerState, "/learner/state", self._on_state, 10)
 
-        self.get_logger().info(f"tutor_policy_node started (mode={self.mode})")
+        # Timer-based publishing at bounded rate (prevents runaway feedback loop)
+        self.create_timer(1.0 / max(publish_hz, 0.1), self._tick)
+
+        self.get_logger().info(f"tutor_policy_node started (mode={self.mode}, publish_hz={publish_hz})")
 
     def _on_state(self, s: LearnerState) -> None:
+        """Store latest learner state (called by subscription callback)."""
+        self.latest_state = s
+
+    def _tick(self) -> None:
+        """Timer callback: publishes action at bounded rate."""
+        if self.latest_state is None:
+            # No state received yet, skip this tick
+            return
+
+        s = self.latest_state
         a = TutorAction()
 
         if self.mode == "fixed":
