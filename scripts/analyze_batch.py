@@ -70,6 +70,7 @@ def metrics_for_file(path: str, cmax: float) -> dict:
         "condition": df["condition"].iloc[0] if "condition" in df.columns else "",
         "disability_profile": df["disability_profile_state"].iloc[0] if "disability_profile_state" in df.columns else "",
         "learning_gain": float(df["knowledge"].iloc[-1] - df["knowledge"].iloc[0]),
+        "final_knowledge": float(df["knowledge"].iloc[-1]),
         "overload_rate": float((df["cognitive_load"] > cmax).mean()),
         "success_rate": float(df["correct"].mean()),
         "accessibility_match_rate": float(df["access_match"].mean()),

@@ -56,7 +56,48 @@ python3 scripts/analyze_batch.py \
 - `summary_all.csv`: Table with one row per run, including all metrics
 - Prints aggregated statistics grouped by condition and disability profile
 
+**Metrics Computed** (same as `analyze_run.py`):
+- `learning_gain`: Final knowledge - initial knowledge
+- `final_knowledge`: Knowledge level at end of run
+- `overload_rate`: Fraction of time cognitive load > threshold
+- `success_rate`: Fraction of correct responses
+- `accessibility_match_rate`: Fraction of actions with modality-disability match
+- `mean_reward`: Average reward per step
+- `n_steps`: Total number of steps
+
 **Useful for**: Comparing multiple runs across different conditions.
+
+---
+
+### `generate_table_5_1.py`
+
+Generates Table 5.1: Mean final knowledge (± SD) comparing Baseline (fixed) and Adaptive tutors across learner profiles.
+
+**Usage**:
+```bash
+python3 scripts/generate_table_5_1.py \
+  --csv results/summary_all.csv \
+  --out results/table_5_1.csv
+```
+
+**Prerequisites**:
+- Must run `analyze_batch.py` first to generate `summary_all.csv`
+- Batch summary must include runs with `condition` in `["fixed", "adaptive"]`
+- Batch summary must include `final_knowledge` column
+
+**Outputs**:
+- `table_5_1.csv`: Formatted table with disability profiles as rows, conditions as columns
+- Console output: Formatted table and summary statistics
+
+**Table Format**:
+```
+Disability Profile | Baseline (fixed) | Adaptive
+none               | 0.75 ± 0.12     | 0.82 ± 0.10
+dyslexia           | 0.68 ± 0.15     | 0.79 ± 0.11
+...
+```
+
+**Useful for**: Chapter 5 results tables, comparing baseline vs adaptive policies.
 
 ---
 
@@ -85,9 +126,17 @@ python3 scripts/analyze_batch.py \
      --out results/summary_all.csv
    ```
 
-4. **View results**:
+4. **Generate Table 5.1**:
+   ```bash
+   python3 scripts/generate_table_5_1.py \
+     --csv results/summary_all.csv \
+     --out results/table_5_1.csv
+   ```
+
+5. **View results**:
    - Check `results/` directory for plots and summary CSVs
    - Use summary CSV for statistical analysis
+   - Use `table_5_1.csv` for publication-ready tables
 
 ---
 
