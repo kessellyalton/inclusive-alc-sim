@@ -29,28 +29,28 @@ class DisabilityParams:
 
 DISABILITY_LIBRARY: Dict[str, DisabilityParams] = {
     "none": DisabilityParams(
-        c0=0.25,
+        c0=0.15,  # lowered from 0.25 for better separation
         rt0=1.2,
         modality_penalty={"visual": 0.00, "audio": 0.00, "multimodal": -0.02},
         visual_penalty=0.00,
         audio_penalty=0.00,
     ),
     "dyslexia": DisabilityParams(
-        c0=0.35,
+        c0=0.40,  # raised from 0.35 for better separation
         rt0=1.6,
         modality_penalty={"visual": 0.08, "audio": -0.02, "multimodal": 0.00},
         visual_penalty=0.06,   # reading-heavy cost
         audio_penalty=0.00,
     ),
     "hearing_impairment": DisabilityParams(
-        c0=0.32,
+        c0=0.35,  # raised from 0.32 for better separation
         rt0=1.3,
         modality_penalty={"visual": 0.00, "audio": 0.10, "multimodal": 0.02},
         visual_penalty=0.00,
         audio_penalty=0.08,    # audio less effective/more effort
     ),
     "low_vision": DisabilityParams(
-        c0=0.34,
+        c0=0.42,  # raised from 0.34 for better separation
         rt0=1.5,
         modality_penalty={"visual": 0.10, "audio": -0.01, "multimodal": 0.02},
         visual_penalty=0.08,   # visual-only harder
@@ -71,12 +71,12 @@ class LearnerStateVars:
 @dataclass(frozen=True)
 class ModelWeights:
     # Knowledge update
-    beta: float = 0.12  # penalty from cognitive load
+    beta: float = 0.03  # penalty from cognitive load (reduced from 0.12 to allow learning)
 
     # Cognitive load weights
     w1: float = 0.12    # difficulty contribution
     w2: float = 0.10    # pacing contribution
-    w3: float = 0.18    # modality cost weight
+    w3: float = 0.20    # modality cost weight (raised from 0.18 for better differentiation)
 
     # Error probability (sigmoid)
     gamma0: float = 0.2
@@ -117,8 +117,8 @@ def alpha_for_action(modality: str, pacing: float, difficulty_u: float, d: Disab
     - very fast pacing reduces learning rate
     - modality mismatches reduce learning rate
     """
-    # base learning rate
-    alpha0 = 0.06
+    # base learning rate (raised from 0.06 to allow meaningful learning)
+    alpha0 = 0.10
 
     pace_demand = pacing_to_unit(pacing)         # higher means faster
     diff_penalty = 0.5 * difficulty_u            # harder => lower α
@@ -129,7 +129,7 @@ def alpha_for_action(modality: str, pacing: float, difficulty_u: float, d: Disab
     mismatch_penalty = clip(m_cost, 0.0, 0.25)   # only penalize positive costs
 
     alpha = alpha0 * (1.0 - diff_penalty) * (1.0 - pace_penalty) * (1.0 - mismatch_penalty)
-    return clip(alpha, 0.005, 0.08)
+    return clip(alpha, 0.01, 0.15)  # widened range from (0.005, 0.08)
 
 
 def step_dynamics(
