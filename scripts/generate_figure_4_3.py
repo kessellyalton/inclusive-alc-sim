@@ -270,17 +270,34 @@ def generate_text_graph():
 
 def launch_system_for_graph():
     """
-    Launch the full system so nodes are available for graph generation.
+    Launch the full system in background, then open rqt_graph and capture screenshot.
     """
     workspace = Path(__file__).parent.parent / "ros2_ws"
     source_script = workspace / "source_workspace.sh"
+    figures_dir = Path(__file__).parent.parent / "figures"
+    figures_dir.mkdir(exist_ok=True)
+    output_path = figures_dir / "figure_4_3_ros2_node_graph.png"
     
     print("\n" + "="*70)
-    print("🚀 Launching System for Node Graph Generation")
+    print("🚀 Launching System + rqt_graph for Figure 4.3")
     print("="*70)
-    print("\nThis will launch the full ROS 2 system so nodes are available.")
-    print("You can then use rqt_graph to visualize the node connections.")
-    print("\n⏹️  Press Ctrl+C to stop when done")
+    print("\nThis will:")
+    print("  1. Launch the full ROS 2 system in the background")
+    print("  2. Wait for nodes to start")
+    print("  3. Open rqt_graph for visualization")
+    print("  4. Wait for you to arrange the graph")
+    print("  5. Capture a screenshot automatically")
+    print(f"  6. Save to: {output_path}")
+    print("\n📸 Screenshot Instructions:")
+    print("  - Wait for the graph to fully load")
+    print("  - Arrange nodes for clarity (drag to reposition)")
+    print("  - Focus on learner-related nodes:")
+    print("    - learner_model_node")
+    print("    - disability_sim_node")
+    print("    - tutor_policy_node")
+    print("  - Hide system nodes if needed (right-click → hide)")
+    print("  - When ready, press Enter to take screenshot")
+    print("\n⏹️  Press Ctrl+C to stop everything when done")
     print("="*70 + "\n")
     
     launch_cmd = [
@@ -289,35 +306,98 @@ def launch_system_for_graph():
         "ros2 launch alc_bringup full_system.launch.py"
     ]
     
+    system_process = None
+    rqt_process = None
+    
     try:
-        process = subprocess.Popen(
+        # Launch system in background
+        print("🚀 Launching ROS 2 system...")
+        system_process = subprocess.Popen(
             launch_cmd,
             cwd=workspace,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            preexec_fn=os.setsid  # Create new process group for clean shutdown
         )
         
-        print("System is starting...\n")
-        for line in process.stdout:
-            print(line, end='')
-            if "learner_model_node" in line or "tutor_policy_node" in line:
-                print("\n✅ System nodes are running. You can now use rqt_graph.\n")
+        # Wait for nodes to start
+        print("⏳ Waiting for nodes to start (10 seconds)...")
+        time.sleep(10)
         
-        process.wait()
+        # Check if nodes are available
+        nodes = get_ros2_nodes()
+        learner_nodes = [n for n in nodes if "learner" in n.lower() or "tutor" in n.lower() or "disability" in n.lower()]
+        if learner_nodes:
+            print(f"✅ Found learner nodes: {', '.join(learner_nodes)}")
+        else:
+            print("⚠️  Learner nodes not yet visible, but continuing...")
+        
+        # Launch rqt_graph
+        print("\n📊 Launching rqt_graph...")
+        source_cmd = source_workspace()
+        rqt_cmd = f"{source_cmd}rqt_graph"
+        rqt_process = subprocess.Popen(
+            ["bash", "-c", rqt_cmd],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        
+        print("✅ rqt_graph launched.")
+        print("   Arrange the graph, then press Enter to take screenshot...")
+        input()
+        
+        print("\n📸 Taking screenshot now...")
+        if take_screenshot(output_path):
+            print(f"✅ Screenshot saved to: {output_path}")
+        else:
+            print("⚠️  Automatic screenshot failed. Please take manually.")
+            print(f"   Save as: {output_path}")
+        
+        print("\n   Press Enter again when done viewing...")
+        input()
+        
+        return True
         
     except KeyboardInterrupt:
-        print("\n\n⏹️  Stopping system...")
-        process.terminate()
-        try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-        print("✅ System stopped")
+        print("\n\n⏹️  Stopping processes...")
+        if rqt_process:
+            rqt_process.terminate()
+            try:
+                rqt_process.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                rqt_process.kill()
+        
+        if system_process:
+            try:
+                os.killpg(os.getpgid(system_process.pid), signal.SIGTERM)
+                system_process.wait(timeout=5)
+            except (subprocess.TimeoutExpired, ProcessLookupError):
+                try:
+                    os.killpg(os.getpgid(system_process.pid), signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+        
+        print("✅ All processes stopped")
         return True
     
-    return process.returncode == 0
+    finally:
+        # Cleanup
+        if rqt_process:
+            rqt_process.terminate()
+            try:
+                rqt_process.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                rqt_process.kill()
+        
+        if system_process:
+            try:
+                os.killpg(os.getpgid(system_process.pid), signal.SIGTERM)
+                system_process.wait(timeout=5)
+            except (subprocess.TimeoutExpired, ProcessLookupError):
+                try:
+                    os.killpg(os.getpgid(system_process.pid), signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
 
 
 def main():
@@ -344,12 +424,7 @@ def main():
     choice = input("\nSelect option (1-3): ").strip()
     
     if choice == "1":
-        # Launch system in background, then open rqt_graph
-        print("\n💡 Tip: In another terminal, run:")
-        print("   cd ~/dev/inclusive-alc-sim/ros2_ws")
-        print("   source source_workspace.sh")
-        print("   rqt_graph")
-        print("\nLaunching system now...")
+        # Launch system in background, then open rqt_graph and capture screenshot
         launch_system_for_graph()
     
     elif choice == "2":
