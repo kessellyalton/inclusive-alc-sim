@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for problem areas -->
+    <linearGradient id="problemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffebee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffcdd2;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for solution area -->
+    <linearGradient id="solutionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for outcomes -->
+    <linearGradient id="outcomeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Arrow marker -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#424242" />
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#fafafa"/>
+  
+  <!-- Title -->
+  <text x="600" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#212121">
+    Research Problem and Proposed Solution
+  </text>
+  
+  <!-- LEFT SIDE: Problem Space (Low-Resource Contexts) -->
+  <g id="problemSpace">
+    <rect x="40" y="80" width="320" height="280" rx="8" fill="url(#problemGradient)" stroke="#d32f2f" stroke-width="2"/>
+    <text x="200" y="110" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#c62828">
+      Problem Space
+    </text>
+    <text x="200" y="135" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#424242">
+      Low-Resource Educational Contexts
+    </text>
+    
+    <!-- Problem items -->
+    <g id="problemItems">
+      <circle cx="70" cy="170" r="4" fill="#d32f2f"/>
+      <text x="85" y="175" font-family="Arial, sans-serif" font-size="14" fill="#424242">Limited devices / shared infrastructure</text>
+      
+      <circle cx="70" cy="200" r="4" fill="#d32f2f"/>
+      <text x="85" y="205" font-family="Arial, sans-serif" font-size="14" fill="#424242">Intermittent power or connectivity</text>
+      
+      <circle cx="70" cy="230" r="4" fill="#d32f2f"/>
+      <text x="85" y="235" font-family="Arial, sans-serif" font-size="14" fill="#424242">High learner–teacher ratios</text>
+      
+      <circle cx="70" cy="260" r="4" fill="#d32f2f"/>
+      <text x="85" y="265" font-family="Arial, sans-serif" font-size="14" fill="#424242">Maintenance and cost constraints</text>
+      
+      <circle cx="70" cy="290" r="4" fill="#d32f2f"/>
+      <text x="85" y="295" font-family="Arial, sans-serif" font-size="14" fill="#424242">Structural resource limitations</text>
+    </g>
+  </g>
+  
+  <!-- RIGHT SIDE: Accessibility Considerations -->
+  <g id="accessibilitySpace">
+    <rect x="840" y="80" width="320" height="280" rx="8" fill="url(#problemGradient)" stroke="#d32f2f" stroke-width="2"/>
+    <text x="1000" y="110" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#c62828">
+      Accessibility Requirements
+    </text>
+    <text x="1000" y="135" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#424242">
+      Learner Diversity &amp; Design Needs
+    </text>
+    
+    <!-- Accessibility items -->
+    <g id="accessibilityItems">
+      <circle cx="870" cy="170" r="4" fill="#d32f2f"/>
+      <text x="885" y="175" font-family="Arial, sans-serif" font-size="14" fill="#424242">Sensory accessibility needs</text>
+      
+      <circle cx="870" cy="200" r="4" fill="#d32f2f"/>
+      <text x="885" y="205" font-family="Arial, sans-serif" font-size="14" fill="#424242">Modality differences (visual/audio/multimodal)</text>
+      
+      <circle cx="870" cy="230" r="4" fill="#d32f2f"/>
+      <text x="885" y="235" font-family="Arial, sans-serif" font-size="14" fill="#424242">Pacing sensitivity</text>
+      
+      <circle cx="870" cy="260" r="4" fill="#d32f2f"/>
+      <text x="885" y="265" font-family="Arial, sans-serif" font-size="14" fill="#424242">Cognitive load limits</text>
+      
+      <circle cx="870" cy="290" r="4" fill="#d32f2f"/>
+      <text x="885" y="295" font-family="Arial, sans-serif" font-size="14" fill="#424242">Individual learning differences</text>
+    </g>
+  </g>
+  
+  <!-- CENTER: Proposed Solution -->
+  <g id="solution">
+    <rect x="420" y="80" width="360" height="280" rx="8" fill="url(#solutionGradient)" stroke="#388e3c" stroke-width="3"/>
+    <text x="600" y="110" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#2e7d32">
+      Proposed Solution
+    </text>
+    <text x="600" y="135" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#424242" font-style="italic">
+      Simulation-Based Inclusive Adaptive Tutoring
+    </text>
+    
+    <!-- Solution principles -->
+    <g id="solutionPrinciples">
+      <rect x="450" y="160" width="300" height="30" rx="4" fill="#ffffff" stroke="#66bb6a" stroke-width="1"/>
+      <text x="600" y="180" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" fill="#424242">Abstraction over embodiment</text>
+      
+      <rect x="450" y="200" width="300" height="30" rx="4" fill="#ffffff" stroke="#66bb6a" stroke-width="1"/>
+      <text x="600" y="220" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" fill="#424242">Controlled, repeatable evaluation</text>
+      
+      <rect x="450" y="240" width="300" height="30" rx="4" fill="#ffffff" stroke="#66bb6a" stroke-width="1"/>
+      <text x="600" y="260" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" fill="#424242">Learner modeling focus</text>
+    </g>
+    
+    <!-- Internal flow -->
+    <g id="internalFlow">
+      <text x="600" y="300" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#424242">
+        Internal Logic
+      </text>
+      
+      <!-- Flow boxes -->
+      <rect x="440" y="320" width="100" height="25" rx="4" fill="#ffffff" stroke="#4caf50" stroke-width="1"/>
+      <text x="490" y="337" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">Learner Model</text>
+      
+      <path d="M 540 332.5 L 560 332.5" stroke="#424242" stroke-width="3" marker-end="url(#arrowhead)"/>
+      
+      <rect x="560" y="320" width="80" height="25" rx="4" fill="#ffffff" stroke="#4caf50" stroke-width="1"/>
+      <text x="600" y="337" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">Policy</text>
+      
+      <path d="M 640 332.5 L 660 332.5" stroke="#424242" stroke-width="3" marker-end="url(#arrowhead)"/>
+      
+      <rect x="660" y="320" width="100" height="25" rx="4" fill="#ffffff" stroke="#4caf50" stroke-width="1"/>
+      <text x="710" y="337" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">Evaluation</text>
+    </g>
+  </g>
+  
+  <!-- Arrows from problems to solution -->
+  <path d="M 360 220 L 420 220" stroke="#424242" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <path d="M 840 220 L 780 220" stroke="#424242" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- OUTCOMES: Bottom section -->
+  <g id="outcomes">
+    <rect x="200" y="420" width="800" height="320" rx="8" fill="url(#outcomeGradient)" stroke="#1976d2" stroke-width="2"/>
+    <text x="600" y="450" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#1565c0">
+      Intended Outcomes
+    </text>
+    
+    <!-- Outcome items in grid -->
+    <g id="outcomeItems">
+      <rect x="240" y="480" width="160" height="100" rx="6" fill="#ffffff" stroke="#42a5f5" stroke-width="1"/>
+      <text x="320" y="505" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1565c0">Reduced Error Cascades</text>
+      <text x="320" y="530" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">Fewer compounding</text>
+      <text x="320" y="545" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">learning errors</text>
+      
+      <rect x="440" y="480" width="160" height="100" rx="6" fill="#ffffff" stroke="#42a5f5" stroke-width="1"/>
+      <text x="520" y="505" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1565c0">Moderated Cognitive Load</text>
+      <text x="520" y="530" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">Appropriate pacing</text>
+      <text x="520" y="545" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">and difficulty</text>
+      
+      <rect x="640" y="480" width="160" height="100" rx="6" fill="#ffffff" stroke="#42a5f5" stroke-width="1"/>
+      <text x="720" y="505" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1565c0">Fewer Accessibility</text>
+      <text x="720" y="525" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1565c0">Mismatches</text>
+      <text x="720" y="545" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">Better modality</text>
+      <text x="720" y="560" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">alignment</text>
+      
+      <rect x="840" y="480" width="160" height="100" rx="6" fill="#ffffff" stroke="#42a5f5" stroke-width="1"/>
+      <text x="920" y="505" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1565c0">More Stable Learning</text>
+      <text x="920" y="525" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1565c0">Trajectories</text>
+      <text x="920" y="545" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">Consistent progress</text>
+      <text x="920" y="560" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#424242">over time</text>
+    </g>
+    
+    <!-- Arrow from solution to outcomes -->
+    <path d="M 600 360 L 600 420" stroke="#424242" stroke-width="3" marker-end="url(#arrowhead)"/>
+  </g>
+  
+  <!-- Bottom caption -->
+  <text x="600" y="780" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#616161" font-style="italic">
+    This dissertation addresses inclusive education challenges in low-resource contexts by proposing
+  </text>
+  <text x="600" y="795" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#616161" font-style="italic">
+    a simulation-first, inclusive adaptive tutoring framework that prioritizes accessibility and pedagogical stability.
+  </text>
+</svg>

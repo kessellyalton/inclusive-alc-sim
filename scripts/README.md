@@ -140,9 +140,83 @@ dyslexia           | 0.68 ± 0.15     | 0.79 ± 0.11
 
 ---
 
+---
+
+## Figure Generation Scripts
+
+### `generate_figure_4_2.py`
+
+Generates Figure 4.2: Simplified Gazebo classroom environment showing the stationary robotic tutor.
+
+**What this figure represents**:
+- Literal snapshot of the Gazebo world defined in `ros2_ws/src/alc_simulation/worlds/classroom.sdf`
+- Minimal environment: ground plane + sun only (intentional minimalism)
+- Stationary robotic tutor (fixed, non-locomotive, passive)
+
+**Usage**:
+```bash
+python3 scripts/generate_figure_4_2.py
+```
+
+**Process**:
+1. Builds workspace (optional, prompts user)
+2. Launches Gazebo with minimal classroom world
+3. Spawns robot
+4. Provides instructions for manual screenshot capture
+
+**Screenshot Instructions** (displayed by script):
+- Rotate camera slightly downward in Gazebo GUI
+- Ensure robot is centered
+- Ensure empty ground plane is visible
+- Disable physics/contact visuals if needed
+- Use Gazebo screenshot button or system screenshot tool
+- Save as: `figure_4_2_gazebo_environment.png`
+
+**Useful for**: Chapter 4, Section 4.3 (Simulation Environment)
+
+---
+
+### `generate_figure_4_3.py`
+
+Generates Figure 4.3: Abstract learner representation as ROS 2 cognitive nodes.
+
+**⚠️ Important distinction**:
+- Figure 4.3 is **NOT** a Gazebo screenshot
+- It is a ROS 2 computation figure showing the node graph
+- Shows: `learner_model_node`, `disability_sim_node`, `tutor_policy_node`
+- There is no learner model in Gazebo, by design
+
+**Usage**:
+```bash
+python3 scripts/generate_figure_4_3.py
+```
+
+**Options**:
+1. Launch system + use rqt_graph (recommended)
+2. Use rqt_graph only (if system already running)
+3. Generate text-based graph (fallback)
+
+**Process**:
+1. Launches full ROS 2 system (if option 1)
+2. Opens `rqt_graph` for interactive visualization
+3. Provides instructions for screenshot capture
+
+**Screenshot Instructions** (displayed by script):
+- Wait for graph to fully load
+- Arrange nodes for clarity (drag to reposition)
+- Focus on learner-related nodes
+- Hide system nodes if needed (right-click → hide)
+- Take screenshot
+- Save as: `figure_4_3_ros2_node_graph.png`
+
+**Useful for**: Chapter 4, Section 4.4 (Learner Model Architecture)
+
+---
+
 ## Integration with Dissertation
 
 These scripts support:
+- **Chapter 4**: Figure generation (4.2: Gazebo environment, 4.3: Node graph)
 - **Chapter 5**: Metrics computation and visualization
 - **Reproducibility**: Clear pipeline from logs → metrics → plots
 - **Statistical Analysis**: Summary tables for condition comparisons
